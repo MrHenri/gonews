@@ -21,7 +21,7 @@ func Set(key string, value []byte) error {
 	_, err := conn.Do("SET", key, []byte(value))
 	HandleError(err)
 
-	conn.Do("Expire", key, redisExpire)
+	conn.Do("EXPIRE", key, redisExpire)
 
 	return err
 }
