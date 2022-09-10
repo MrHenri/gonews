@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/garyburd/redigo/redis"
+	"github.com/gomodule/redigo/redis"
 )
 
 const (
@@ -32,7 +32,9 @@ func Get(key string) ([]byte, error) {
 
 	var data []byte
 	data, err := redis.Bytes(conn.Do("GET", key))
-	HandleError(err)
+	if err != nil && err != redis.ErrNil {
+		panic(err)
+	}
 
 	return data, err
 }

@@ -1,0 +1,47 @@
+version: '3.9'
+services:
+
+  app1:
+    build:
+      context: .
+    container_name: app1
+    ports:
+      - "8080"
+    networks:
+      - prod
+    depends_on:
+      mysql:
+        condition: service_healthy
+  
+  mysql:
+    image: mysql
+    container_name: mysql
+    ports: 
+      - 3306:3306
+    environment:       
+      - MYSQL_USER=gonewsuser
+      - MYSQL_PASSWORD=gonewsps
+      - MYSQL_DATABASE=gonews
+      - MYSQL_ROOT_PASSWORD=gonewsps
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - prod
+    healthcheck:
+          test: mysqladmin ping -h 127.0.0.1 -u $MYSQL_USER --password=$MYSQL_PASSWORD
+          timeout: 20s
+          retries: 10
+  
+  redis:
+    image: redis
+    container_name: redis
+    networks:
+      - prod
+    depends_on:
+      - mysql      
+    ports:      
+      - 6379:6379    
+
+networks:
+  prod:
+    driver: bridge
