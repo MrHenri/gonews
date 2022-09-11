@@ -10,4 +10,3 @@ COPY . .
 RUN go build -v -o gonews
 
 CMD ["./gonews"]
-EXPOSE 8080

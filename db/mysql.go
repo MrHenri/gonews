@@ -9,7 +9,7 @@ import (
 
 const (
 	DB_NAME = "gonews"
-	DB_HOST = "localhost"
+	DB_HOST = "db"
 	DB_USER = "gonewsuser"
 	DB_PASS = "gonewsps"
 	DB_PORT = 3306

@@ -6,16 +6,18 @@ services:
       context: .
     container_name: app1
     ports:
-      - "8080"
+      - 8080:8080
     networks:
       - prod
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1" 
     depends_on:
-      mysql:
+      db:
         condition: service_healthy
   
-  mysql:
+  db:
     image: mysql
-    container_name: mysql
+    container_name: gonews-db
     ports: 
       - 3306:3306
     environment:       
@@ -27,9 +29,11 @@ services:
       - ./mysql:/var/lib/mysql
     networks:
       - prod
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1" 
     healthcheck:
           test: mysqladmin ping -h 127.0.0.1 -u $MYSQL_USER --password=$MYSQL_PASSWORD
-          timeout: 20s
+          timeout: 10s
           retries: 10
   
   redis:
@@ -38,9 +42,11 @@ services:
     networks:
       - prod
     depends_on:
-      - mysql      
+      - db      
     ports:      
-      - 6379:6379    
+      - 6379:6379
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"    
 
 networks:
   prod:

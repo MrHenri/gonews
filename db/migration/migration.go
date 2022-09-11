@@ -7,6 +7,8 @@ import (
 
 func AutoMigration() {
 	db := db.Connect()
-	defer db.Close()
-	db.AutoMigrate(models.News{})
+	db.Debug().DropTableIfExists(&models.News{})
+	//Drops table if already exists
+	db.Debug().AutoMigrate(&models.News{})
+	//Auto create table based on Model
 }
