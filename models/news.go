@@ -17,7 +17,7 @@ type News struct {
 }
 
 func (n *News) GetAllNews() ([]News, error) {
-	connection := database.Connect()
+	connection, _ := database.Connect()
 	defer connection.Close()
 
 	newsList := []News{}
@@ -40,13 +40,13 @@ func (n *News) GetAllNews() ([]News, error) {
 }
 
 func (n *News) AddNews() (*News, error) {
-	connection := database.Connect()
+	connection, _ := database.Connect()
 	defer connection.Close()
 
 	err := connection.Debug().Model(&News{}).Create(&n).Error
 	if err != nil {
 		return &News{}, err
 	}
-
+	database.Flush("news")
 	return n, nil
 }

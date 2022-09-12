@@ -11,8 +11,13 @@
     <title>Hello, world!</title>
 </head>
 <body>
-    <a class="btn btn-info" href="/form-news">Create News</a>
     <div class="container">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-5">News</h1>
+            </div>
+            <a class="btn btn-info" href="/form-news">Create News</a>
+        </div>
         <br>
         {{ range . }}
         <div class="card">

@@ -1,6 +1,8 @@
 package db
 
 import (
+	"fmt"
+
 	"github.com/gomodule/redigo/redis"
 )
 
@@ -32,8 +34,8 @@ func Get(key string) ([]byte, error) {
 
 	var data []byte
 	data, err := redis.Bytes(conn.Do("GET", key))
-	if err != nil && err != redis.ErrNil {
-		panic(err)
+	if err != nil {
+		return data, fmt.Errorf("error getting key %s: %v", key, err)
 	}
 
 	return data, err
@@ -45,7 +47,9 @@ func Flush(key string) ([]byte, error) {
 
 	var data []byte
 	data, err := redis.Bytes(conn.Do("DEL", key))
-	HandleError(err)
+	if err != nil {
+		return data, fmt.Errorf("error getting key %s: %v", key, err)
+	}
 
 	return data, err
 }
